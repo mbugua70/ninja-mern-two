@@ -37,4 +37,4 @@ app.get('/', (req, res) => {
 // listen for requests
 // workout routes
 
-app.use("/api/workout", workRouter);
+app.use("/api/workouts", workRouter);

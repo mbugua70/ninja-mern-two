@@ -14,7 +14,7 @@ module.exports.workOut_get_all = async (req, res) => {
         .status(200)
         .json({ success: true, msg: "You have no workout record available" });
     }
-    return res.status(200).json({ success: true, data: allWorkOut });
+    return res.status(200).json({ success: true, allWorkOut });
   } catch (err) {
     console.log(err);
   }
@@ -32,7 +32,7 @@ module.exports.single_get_workOut = async (req, res) => {
     if (!SingleWorkOut) {
       return res.status(400).json({ success: false, msg: "No such workout" });
     }
-    res.status(200).json({ success: true, data: SingleWorkOut });
+    res.status(200).json({ success: true, SingleWorkOut });
     // if(SingleWorkOut)
   } catch (err) {
     console.log(err);
@@ -94,7 +94,7 @@ module.exports.workOut_update = async (req, res) => {
       return res.status(404).json({ success: false, msg: "No such workout" });
     }
 
-    res.status(204).json({ success: true, data: updatedWork });
+    res.status(204).json({ success: true, updatedWork });
   } catch (err) {
     console.log(err);
   }
