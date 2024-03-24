@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 // components
@@ -7,15 +7,34 @@ import WorkoutForm from "../components/WorkoutForm";
 
 const Home = () => {
   const { workouts, dispatch } = useWorkoutsContext();
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnlineStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
+
+    window.addEventListener("online", handleOnlineStatus);
+    window.addEventListener("offline", handleOnlineStatus);
+
+    return () => {
+      window.removeEventListener("online", handleOnlineStatus);
+      window.removeEventListener("offline", handleOnlineStatus);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts");
-      const json = await response.json();
-      console.log(json.allWorkOut);
+      try {
+        const response = await fetch("/api/workouts");
+        const json = await response.json();
+        console.log(json.allWorkOut);
 
-      if (response.ok) {
-        dispatch({ type: "SET_WORKOUTS", payload: json.allWorkOut });
+        if (response.ok) {
+          dispatch({ type: "SET_WORKOUTS", payload: json.allWorkOut });
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -25,6 +44,13 @@ const Home = () => {
   return (
     <div className="home">
       <div className="workouts">
+        <header className="App-header">
+          {!isOnline && (
+            <p className="online-check">
+              Please check your internet connection and try again.
+            </p>
+          )}
+        </header>
         {/* {workouts &&
           workouts.map((workout) => (
             <WorkoutDetails workout={workout} key={workout._id} />

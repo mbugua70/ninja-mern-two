@@ -67,6 +67,8 @@ header a {
   color: #333;
 }
 
+
+
 /* new workout form */
 label, input {
   display: block;
@@ -99,4 +101,11 @@ div.error {
 }
 input.error {
   border: 1px solid var(--error);
+}
+
+p.online-check{
+  color:red;
+  padding:20px 0px;
+  text-align: center;
+  font-size: 20px;
 }
