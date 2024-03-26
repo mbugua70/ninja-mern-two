@@ -10,9 +10,10 @@ const mongoose = require("mongoose");
 
 // workOut all
 module.exports.workOut_get_all = async (req, res) => {
+  const user_id = req.user._id;
   //   res.json({ msg: "Get all the workouts" });
   try {
-    const allWorkOut = await WorkOutModel.find();
+    const allWorkOut = await WorkOutModel.find({ user_id });
     console.log(allWorkOut);
     if (allWorkOut.length === 0) {
       return res
@@ -22,7 +23,7 @@ module.exports.workOut_get_all = async (req, res) => {
     return res.status(200).json({ success: true, allWorkOut });
   } catch (err) {
     console.log(err);
-    res.status(400).json({error: err.message})
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -42,7 +43,7 @@ module.exports.single_get_workOut = async (req, res) => {
     // if(SingleWorkOut)
   } catch (err) {
     console.log(err);
-    res.status(400).json({error: err.message})
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -50,33 +51,39 @@ module.exports.workOut_post = async (req, res) => {
   //   res.json({ msg: "Post new workout" });
   const { title, reps, load } = req.body;
 
+  const user_id = req.user._id;
+
   let emptyFields = [];
 
-  if(!title){
-    emptyFields.push('title');
+  if (!title) {
+    emptyFields.push("title");
   }
 
-  if(!reps){
-    emptyFields.push('reps');
+  if (!reps) {
+    emptyFields.push("reps");
   }
 
-
-  if(!load){
-    emptyFields.push('load')
+  if (!load) {
+    emptyFields.push("load");
   }
 
-  if(emptyFields.length > 0){
-    return res.status(400).json({error: 'Please fill in all the fields', emptyFields})
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill in all the fields", emptyFields });
   }
 
   try {
-    const createWorkOut = await WorkOutModel.create({ title, reps, load });
-    res
-      .status(201)
-      .json({ success: true, createWorkOut });
+    const createWorkOut = await WorkOutModel.create({
+      title,
+      reps,
+      load,
+      user_id,
+    });
+    res.status(201).json({ success: true, createWorkOut });
   } catch (err) {
     console.log(err);
-    res.status(400).json({error: err.message})
+    res.status(400).json({ error: err.message });
   }
 };
 
