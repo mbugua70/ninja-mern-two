@@ -12,6 +12,7 @@ export const useLogOut = () => {
     // auth context
 
     dispatch({ type: "LOGOUT" });
+    // this one will remove user from the global state once the user logouts
     workOutDisatch({ type: "SET_WORKOUT", payload: null });
   };
 
